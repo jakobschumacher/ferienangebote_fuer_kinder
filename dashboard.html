@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferienangebote Dashboard - Berlin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f8f9fa;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6366f1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu {
+            padding: 24px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #f1f5f9;
+            color: #6366f1;
+        }
+
+        .nav-item.active {
+            border-right: 2px solid #6366f1;
+        }
+
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 12px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 32px;
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .header-subtitle {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 14px;
+            flex: 1;
+            color: #2d3748;
+        }
+
+        .search-icon {
+            width: 16px;
+            height: 16px;
+            color: #64748b;
+            margin-right: 8px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Content Card */
+        .content-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            padding: 6px 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover, .view-btn.active {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        /* Table */
+        .activities-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activities-table th {
+            background: #f8f9fa;
+            padding: 12px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .activities-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .activities-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .provider-name {
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-sport { background: #dcfce7; color: #166534; }
+        .category-kultur { background: #fef3c7; color: #92400e; }
+        .category-natur { background: #d1fae5; color: #065f46; }
+        .category-bildung { background: #dbeafe; color: #1e40af; }
+        .category-freier { background: #f3e8ff; color: #7c2d12; }
+        .category-öffentlich { background: #e0e7ff; color: #3730a3; }
+
+        .age-group {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .cost {
+            font-weight: 500;
+            color: #059669;
+        }
+
+        .website-link {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .website-link:hover {
+            text-decoration: underline;
+        }
+
+        .full-badge {
+            background: #ef4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .search-box {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .header-right {
+                justify-content: space-between;
+            }
+            
+            .activities-table th:nth-child(n+4),
+            .activities-table td:nth-child(n+4) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Ferienangebote Manager</div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">🎪</span>
+                    Ferienangebote
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🏢</span>
+                    Anbieter
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📅</span>
+                    Kalender
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📍</span>
+                    Standorte
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">👥</span>
+                    Teilnehmer
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    Einstellungen
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <h1 class="header-title">Ferienangebote</h1>
+                    <p class="header-subtitle">Übersicht aller Anbieter von Ferienangeboten für Kinder in Berlin</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Anbieter suchen..." id="searchInput">
+                    </div>
+                    <div class="user-info">
+                        <span>Hallo, Admin</span>
+                        <div class="user-avatar">A</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalProviders">22</div>
+                    <div class="stat-label">Anbieter</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCategories">6</div>
+                    <div class="stat-label">Kategorien</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalLocations">12</div>
+                    <div class="stat-label">Standorte</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalPrograms">35</div>
+                    <div class="stat-label">Programme</div>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div class="content-card">
+                <div class="content-header">
+                    <h2 class="content-title">Alle Ferienangebote</h2>
+                    <div class="view-options">
+                        <button class="view-btn active">📋</button>
+                        <button class="view-btn">📊</button>
+                        <button class="view-btn">🗺️</button>
+                    </div>
+                </div>
+
+                <table class="activities-table" id="activitiesTable">
+                    <thead>
+                        <tr>
+                            <th>Anbieter</th>
+                            <th>Kategorie</th>
+                            <th>Zielgruppe</th>
+                            <th>Angebots-Typ</th>
+                            <th>Kosten</th>
+                            <th>Standort</th>
+                            <th>Website</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activitiesTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - GitHub raw CSV URL
+        const CSV_URL = 'https://raw.githubusercontent.com/jakobschumacher/ferienangebote_fuer_kinder/refs/heads/main/anbieter.csv';
+        
+        let allActivities = [];
+        let filteredActivities = [];
+
+        // Load CSV data dynamically
+        async function loadCSVData() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                parseCSVData(csvText);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der CSV-Daten:', error);
+                document.getElementById('activitiesTableBody').innerHTML = 
+                    '<tr><td colspan="7" style="text-align: center; color: #ef4444;">Fehler beim Laden der Daten</td></tr>';
+            }
+        }
+
+        // Simple CSV parser
+        function parseCSVData(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            const headers = parseCSVLine(lines[0]);
+            
+            allActivities = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                if (values.length >= headers.length) {
+                    const activity = {};
+                    headers.forEach((header, index) => {
+                        activity[header] = values[index] || '';
+                    });
+                    allActivities.push(activity);
+                }
+            }
+            
+            filteredActivities = [...allActivities];
+            displayActivities();
+            updateStats();
+        }
+
+        // Parse a single CSV line handling quoted fields
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result;
+        }
+
+        // Display activities in table
+        function displayActivities() {
+            const tbody = document.getElementById('activitiesTableBody');
+            
+            if (filteredActivities.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b;">Keine Angebote gefunden</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredActivities.map(activity => {
+                const categoryClass = getCategoryClass(activity['Träger-Kategorie']);
+                const websiteUrl = activity['Website/Kontakt'].startsWith('http') 
+                    ? activity['Website/Kontakt'] 
+                    : `https://${activity['Website/Kontakt']}`;
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="provider-name">${activity.Anbieter}</div>
+                        </td>
+                        <td>
+                            <span class="category-badge ${categoryClass}">
+                                ${activity['Träger-Kategorie']}
+                            </span>
+                        </td>
+                        <td class="age-group">${activity.Zielgruppe}</td>
+                        <td>${activity['Angebots-Typ']}</td>
+                        <td class="cost">${activity.Kosten}</td>
+                        <td>${activity['Bezirk/Standort']}</td>
+                        <td>
+                            <a href="${websiteUrl}" target="_blank" class="website-link">
+                                Website →
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Get category CSS class
+        function getCategoryClass(category) {
+            const categoryMap = {
+                'Sport': 'category-sport',
+                'Kultur': 'category-kultur',
+                'Natur': 'category-natur',
+                'Bildung': 'category-bildung',
+                'Freier Träger': 'category-freier',
+                'Öffentlich': 'category-öffentlich'
+            };
+            return categoryMap[category] || 'category-sport';
+        }
+
+        // Update statistics
+        function updateStats() {
+            const categories = new Set(allActivities.map(a => a['Träger-Kategorie']));
+            const locations = new Set(allActivities.map(a => a['Bezirk/Standort']));
+            
+            document.getElementById('totalProviders').textContent = allActivities.length;
+            document.getElementById('totalCategories').textContent = categories.size;
+            document.getElementById('totalLocations').textContent = locations.size;
+        }
+
+        // Search functionality
+        function filterActivities() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredActivities = allActivities.filter(activity => {
+                return activity.Anbieter.toLowerCase().includes(searchTerm) ||
+                       activity['Träger-Kategorie'].toLowerCase().includes(searchTerm) ||
+                       activity['Angebots-Typ'].toLowerCase().includes(searchTerm) ||
+                       activity['Bezirk/Standort'].toLowerCase().includes(searchTerm);
+            });
+            
+            displayActivities();
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('searchInput').addEventListener('input', filterActivities);
+            loadCSVData();
+        });
+    </script>
+</body>
+</html>

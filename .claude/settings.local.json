@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:fez-berlin.de)",
+      "WebFetch(domain:jugendkulturservice.de)",
+      "WebFetch(domain:bewegter-sommer.de)",
+      "WebFetch(domain:herthabsc.com)",
+      "WebFetch(domain:fc-union-berlin.de)",
+      "WebFetch(domain:berlinerbaeder.de)",
+      "WebFetch(domain:machmitmuseum.de)",
+      "WebFetch(domain:labyrinth-kindermuseum.de)",
+      "WebFetch(domain:oekowerk.de)",
+      "WebFetch(domain:domaene-dahlem.de)",
+      "WebFetch(domain:little-lab.de)",
+      "WebFetch(domain:robot-school.de)",
+      "WebFetch(domain:berlin.de)",
+      "WebFetch(domain:grips-theater.de)",
+      "WebFetch(domain:sommerferienkalender-berlin.de)"
+    ],
+    "deny": []
+  }
+}
